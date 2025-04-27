@@ -33,7 +33,7 @@ body {
 }
 
 #mainForm h1 {
-    color: #333;
+    color: rgb(54, 80, 29);;
     font-size: 24px;
     margin-bottom: 15px;
 }
@@ -52,7 +52,7 @@ input[type="number"] {
     margin: 10px 0;
     border: 1px solid #ccc;
     border-radius: 4px;
-    font-size: 16px;
+    font-size: 18px;
     outline: none;
 }
 
@@ -98,8 +98,10 @@ button:disabled {
 
 #familyForm p,
 #medicineForm p {
-    font-size: 16px;
-    color: #666;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 18px;
+    font-weight: bold;
+    color: #323232;
     margin-bottom: 15px;
 }
 

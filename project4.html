@@ -7,13 +7,13 @@
 </head>
 <body>
     <div id="ll">
-    <h1>Welcome To MediAddicts</h1>
-    <h3> ~📋Your Medication Reminder</h3>
+    <h1 style="font-family: Georgia, 'Times New Roman', Times, serif;">Welcome To MediAddicts</h1>
+    <h3 style="font-family: 'Courier New', Courier, monospace;"> ~📋Your Medication Reminder</h3>
      </div>
     <div id="mainForm">
-        <h1 style="color: rgb(54, 80, 29);">Enter your details </h1>
-        <input type="text" id="userName" placeholder="Your Name"><br>
-        <input type="tel" id="phoneNumber" placeholder="Your Phone Number" pattern="^\d{10}$"><br>
+        <h1 style="font-family: 'Times New Roman', Times, serif;">Enter your details </h1>
+        <input type="text" id="userName" placeholder="Your Name" required><br>
+        <input type="tel" id="phoneNumber" placeholder="Your Phone Number" pattern="^\d{10}$" required><br>
         <button onclick="storeUserInfo()">Submit</button>
     </div>
 
@@ -41,7 +41,7 @@
         <h3>⏰ Medicine Times:</h3>
         <ul id="timeList"></ul>
 
-        <button onclick="cancelAllReminders()" style="background-color: red; color: white; margin-top: 20px;">
+        <button onclick="cancelAllReminders()"  style="background-color: rgb(234, 96, 96); color: white; margin-top: 20px; button:hover { background-color: rgb(230, 47, 47); }">
             ❌ Cancel All Reminders
         </button>
     </div>
