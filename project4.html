@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MediAddicts - Reminder App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="ll">
+    <h1>Welcome To MediAddicts</h1>
+    <h3> ~📋Your Medication Reminder</h3>
+     </div>
+    <div id="mainForm">
+        <h1 style="color: rgb(54, 80, 29);">Enter your details </h1>
+        <input type="text" id="userName" placeholder="Your Name"><br>
+        <input type="tel" id="phoneNumber" placeholder="Your Phone Number" pattern="^\d{10}$"><br>
+        <button onclick="storeUserInfo()">Submit</button>
+    </div>
+
+    <div id="familyForm" style="display:none;">
+        <p>How many family members would you like to add?</p>
+        <input type="number" id="familyCount" min="0" placeholder="Number of Family Members"><br>
+        <button onclick="generateFamilyInputs()">Continue</button>
+    </div>
+
+    <div id="familyInputs" style="display:none;"></div>
+
+    <div id="medicineForm" style="display:none;">
+        <p>How many times a day do you take your medicine?</p>
+        <input type="number" id="doseCount" min="1" placeholder="Times per Day"><br>
+        <button onclick="generateMedicineTimeInputs()">Continue</button>
+    </div>
+
+    <div id="medicineTimes" style="display:none;"></div>
+    <div id="dashboard" style="display:none; margin-top: 50px;">
+        <h2>📋 Your Scheduled Reminders</h2>
+
+        <h3>📞 Phone Numbers:</h3>
+        <ul id="phoneList"></ul>
+
+        <h3>⏰ Medicine Times:</h3>
+        <ul id="timeList"></ul>
+
+        <button onclick="cancelAllReminders()" style="background-color: red; color: white; margin-top: 20px;">
+            ❌ Cancel All Reminders
+        </button>
+    </div>
+    <script>
+        const phoneNumbers = [];
+        let userInfo = {};
+
+        function storeUserInfo() {
+            const userName = document.getElementById("userName").value.trim();
+            const phoneNumber = document.getElementById("phoneNumber").value.trim();
+
+            if (userName && phoneNumber) {
+                userInfo.name = userName;
+                userInfo.phone = phoneNumber;
+                phoneNumbers.push({ name: userName, phone: phoneNumber });
+                alert("Your information has been saved!");
+
+                document.getElementById("mainForm").style.display = "none";
+                document.getElementById("familyForm").style.display = "block";
+            } else {
+                alert("Please enter both your name and a valid phone number.");
+            }
+        }
+
+        function generateFamilyInputs() {
+            const count = parseInt(document.getElementById("familyCount").value);
+            const container = document.getElementById("familyInputs");
+            container.innerHTML = "";
+
+            if (!isNaN(count) && count >= 0) {
+                for (let i = 0; i < count; i++) {
+                    const nameInput = document.createElement("input");
+                    nameInput.type = "text";
+                    nameInput.placeholder = `Family Member ${i + 1} Name`;
+                    nameInput.className = "familyName";
+                    nameInput.style.display = "block";
+
+                    const phoneInput = document.createElement("input");
+                    phoneInput.type = "tel";
+                    phoneInput.placeholder = `Family Member ${i + 1} Phone Number`;
+                    phoneInput.className = "familyPhone";
+                    phoneInput.style.display = "block";
+
+                    container.appendChild(nameInput);
+                    container.appendChild(phoneInput);
+                }
+
+                const saveButton = document.createElement("button");
+                saveButton.textContent = "Save Family Members";
+                saveButton.onclick = saveFamilyNumbers;
+                container.appendChild(saveButton);
+
+                container.style.display = "block";
+            } else {
+                alert("Please enter a valid number.");
+            }
+        }
+
+        function saveFamilyNumbers() {
+            const nameInputs = document.getElementsByClassName("familyName");
+            const phoneInputs = document.getElementsByClassName("familyPhone");
+
+            for (let i = 0; i < nameInputs.length; i++) {
+                const name = nameInputs[i].value.trim();
+                const phone = phoneInputs[i].value.trim();
+
+                if (name && phone) {
+                    phoneNumbers.push({ name, phone });
+                }
+            }
+            alert("Family members information saved!");
+            document.getElementById("familyForm").style.display = "none";
+            document.getElementById("familyInputs").style.display = "none";
+            document.getElementById("medicineForm").style.display = "block";
+        }
+
+        function generateMedicineTimeInputs() {
+            const count = parseInt(document.getElementById("doseCount").value);
+            const container = document.getElementById("medicineTimes");
+            container.innerHTML = "";
+
+            if (!isNaN(count) && count > 0) {
+                for (let i = 0; i < count; i++) {
+                    const label = document.createElement("label");
+                    label.textContent = `Dose Time ${i + 1}`;
+                    container.appendChild(label);
+
+                    const timeInput = document.createElement("input");
+                    timeInput.type = "time";
+                    timeInput.className = "medicineTime";
+                    timeInput.style.display = "block";
+
+                    container.appendChild(timeInput);
+                }
+
+                const saveButton = document.createElement("button");
+                saveButton.textContent = "Save Medicine Times";
+                saveButton.onclick = saveMedicineTimes;
+                container.appendChild(saveButton);
+
+                container.style.display = "block";
+            } else {
+                alert("Please enter a valid number.");
+            }
+        }
+
+        function saveMedicineTimes() {
+
+            const timeInputs = document.getElementsByClassName("medicineTime");
+            const times = [];
+
+            for (let input of timeInputs) {
+                if (input.value) {
+                    times.push(input.value);
+                }
+            }
+
+            userInfo.medicineSchedule = times;
+
+            alert("Medicine times saved!");
+            console.log("All User Data:", userInfo);
+            console.log("All Phone Numbers (User + Family):", phoneNumbers);
+
+            scheduleReminders();
+            document.getElementById("medicineForm").style.display = "none";
+            document.getElementById("medicineTimes").style.display = "none";
+            document.getElementById("dashboard").style.display = "block";
+
+            populateDashboard();
+        }
+
+        function scheduleReminders() {
+            const numbers = phoneNumbers.map(entry => entry.phone);
+            const medicineTimes = userInfo.medicineSchedule;
+
+            fetch('http://localhost:3000/schedule-reminders', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ phoneNumbers: numbers, medicineTimes })
+            })
+            .then(response => response.text())
+            .then(data => {
+                console.log(data);
+                alert('Medication reminders scheduled successfully!');
+            })
+            .catch(error => {
+                console.error('Error scheduling reminders:', error);
+                alert('Failed to schedule reminders.');
+            });
+        }
+        function populateDashboard() {
+    const phoneList = document.getElementById("phoneList");
+    const timeList = document.getElementById("timeList");
+
+    phoneList.innerHTML = "";
+    timeList.innerHTML = "";
+
+    for (let entry of phoneNumbers) {
+        const li = document.createElement("li");
+        li.textContent = `${entry.name}: ${entry.phone}`;
+        phoneList.appendChild(li);
+    }
+
+    for (let time of userInfo.medicineSchedule) {
+        const li = document.createElement("li");
+        li.textContent = time;
+        timeList.appendChild(li);
+    }
+}
+    
+             function cancelAllReminders() {
+                fetch('http://localhost:3000/cancel-reminders', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phoneNumbers: phoneNumbers.map(entry => entry.phone) })
+                })
+                .then(response => response.text())
+                .then(data => {
+                    console.log(data);
+                    alert('All reminders canceled successfully!');
+                })
+                .catch(error => {
+                    console.error('Error canceling reminders:', error);
+                    alert('Failed to cancel reminders.');
+                });
+            }
+    </script>
+
+</body>
+</html>

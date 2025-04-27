@@ -1,0 +1,191 @@
+/* General Body Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #73f6e9;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url("img1.jpg");
+    background-size: 100%;
+}
+#ll {
+        position: absolute;
+        top: 10px;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        z-index: 2;
+        font-size: larger;
+        color: rgb(54, 80, 29);
+}
+/* Main Form Styling */
+#mainForm {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+}
+
+#mainForm h1 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+#mainForm p {
+    color: #666;
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+input[type="text"],
+input[type="tel"],
+input[type="number"] {
+    width: 80%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    outline: none;
+}
+
+input[type="text"]:focus,
+input[type="tel"]:focus,
+input[type="number"]:focus {
+    border-color: #4CAF50;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    margin: 10px 0;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+button:disabled {
+    background-color: #d3d3d3;
+    cursor: not-allowed;
+}
+
+/* Family Form Styling */
+#familyForm,
+#medicineForm {
+    background-color: white;
+    border-radius: 8px;
+    margin: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+    margin-top: 20px;
+}
+
+#familyForm p,
+#medicineForm p {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+/* Family Inputs and Medicine Times Section Styling */
+#familyInputs,
+#medicineTimes {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    margin-top: 20px;
+    display: none;
+}
+
+/* Dashboard Styling */
+#dashboard {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+    margin-top: 50px;
+    text-align: center;
+}
+
+#dashboard h2 {
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+#dashboard h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+ul {
+    text-align: left;
+    margin-left: 20px;
+    font-size: 16px;
+}
+
+button {
+    background-color: #2980b9;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 16px;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: green;
+}
+
+button:disabled {
+    background-color: #d3d3d3;
+    cursor: not-allowed;
+}
+
+/* Media Query for Mobile Responsiveness */
+@media (max-width: 600px) {
+
+    #mainForm,
+    #familyForm,
+    #medicineForm,
+    #familyInputs,
+    #medicineTimes,
+    #dashboard {
+        width: 90%;
+    }
+
+    #mainForm h1 {
+        font-size: 20px;
+    }
+
+    input[type="text"],
+    input[type="tel"],
+    input[type="number"],
+    button {
+        font-size: 14px;
+        padding: 8px;
+    }
+}

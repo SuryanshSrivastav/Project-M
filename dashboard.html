@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MediAddicts Dashboard</title>
+</head>
+<body>
+    <h1>📋 Your Scheduled Reminders</h1>
+    <h3>📞 Phone Numbers:</h3>
+    <ul id="phoneList"></ul>
+
+    <h3>⏰ Medicine Times:</h3>
+    <ul id="timeList"></ul>
+
+    <button onclick="cancelAllReminders()">❌ Cancel All Reminders</button>
+
+    <script >
+        function storeUserInfo() {
+            const userName = document.getElementById("userName").value.trim();
+            const phoneNumber = document.getElementById("phoneNumber").value.trim();
+
+            if (userName && phoneNumber) {
+                // Store user info in localStorage or send to server
+                localStorage.setItem('userInfo', JSON.stringify({ name: userName, phone: phoneNumber }));
+                alert("Your information has been saved!");
+            } else {
+                alert("Please fill in all fields.");
+            }
+        
+        // Here you would re-fetch or reuse the data (maybe from localStorage or server)
+        // Example loading dummy data:
+        const phoneNumbers = JSON.parse(localStorage.getItem('phoneNumbers')) || [];
+        const medicineTimes = JSON.parse(localStorage.getItem('medicineSchedule')) || [];
+
+        const phoneList = document.getElementById('phoneList');
+        phoneNumbers.forEach(number => {
+            const li = document.createElement('li');
+            li.textContent = number;
+            phoneList.appendChild(li);
+        });
+
+        const timeList = document.getElementById('timeList');
+        medicineTimes.forEach(time => {
+            const li = document.createElement('li');
+            li.textContent = time;
+            timeList.appendChild(li);
+        });
+    }
+        function cancelAllReminders() {
+            fetch('http://localhost:3000/cancel-reminders', { method: 'POST' })
+            .then(response => response.text())
+            .then(data => {
+                alert('All reminders cancelled!');
+                console.log(data);
+            })
+            .catch(error => {
+                console.error('Error cancelling reminders:', error);
+            });
+        }
+    </script>
+</body>
+</html>
