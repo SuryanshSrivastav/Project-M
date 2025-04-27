@@ -23,5 +23,24 @@ The system uses a user-friendly form interface to collect information and a back
 
 ---
 
-## 📦 Project Structure
+
+## 📋 How It Works
+
+1. **User Registration:**  
+   The user enters their name and phone number.
+
+2. **Family Members:**  
+   The user can add additional family members and their phone numbers.
+
+3. **Medicine Scheduling:**  
+   The user specifies how many times a day they take their medicine.
+
+4. **Backend Communication:**  
+   When the user submits the times, the frontend sends all collected data to the Node.js backend.
+
+5. **SMS Scheduling:**  
+   The backend uses Twilio and node-cron to schedule and send SMS reminders daily at the selected times.
+
+---
+
 
